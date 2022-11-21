@@ -5,14 +5,14 @@ const them = createTheme({
    palette: {
       primary: cyan,
       secondary: {
-         main: '#FF845E',
+         main: '#FFFFFF',
       },
       info: {
-         main: '#808080',
+         main: '#BCF973',
       },
    },
    typography: {
-      fontFamily: ["'Avenir'"].join(','),
+      fontFamily: ["'Arial'"].join(','),
       body1: { fontSize: '1.5rem' },
       body2: { fontSize: '1.3rem' },
    },

@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-key */
 import { Box, Button, CircularProgress, TextField, styled } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks/hook';
@@ -86,13 +87,13 @@ function ChatBot() {
             borderRadius: '8px',
             width: '100%',
             height: '100%',
-            backgroundColor: 'grey',
+            backgroundColor: 'white',
             display: 'flex',
             flexDirection: 'column',
          }}
       >
          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '3rem' }}>BotSpice</Box>
-         <Box sx={{ height: '100%', overflow: 'scroll', p: '1rem', boxSizing: 'border-box' }}>
+         <Box sx={{ height: '100%', overflowY: 'scroll', p: '1rem', boxSizing: 'border-box' }}>
             {result.isLoading && <CircularProgress />}
             {messages?.map((mes) => {
                if (mes.typeMessage === 'card') {
@@ -111,7 +112,7 @@ function ChatBot() {
                alignItems: 'center',
                justifyContent: 'space-between',
                p: '0.3rem 0.8rem',
-               backgroundColor: 'black',
+               backgroundColor: '#CAF893',
                borderRadius: '0px 0px 8px 8px',
             }}
          >
@@ -124,7 +125,9 @@ function ChatBot() {
                color="info"
                onKeyDown={(a) => handleKeyboard(a)}
             />
-            <Button onClick={() => sendUserMessage()}>Send</Button>
+            <Button variant="contained" onClick={() => sendUserMessage()} endIcon={<SendIcon />} sx={{backgroundColor:'#B1F85C'}}>
+               Send
+            </Button>
          </Box>
       </Box>
    );
