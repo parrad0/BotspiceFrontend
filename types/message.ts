@@ -1,5 +1,6 @@
 export type Message = {
-    text:string, 
-    type:boolean,
-    key: string
-}
+   text: any;
+   type: boolean;
+   key: string;
+   typeMessage: string;
+};

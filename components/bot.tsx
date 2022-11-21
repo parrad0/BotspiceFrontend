@@ -1,14 +1,18 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-key */
-import { Box, Button, CircularProgress, styled, TextField } from '@mui/material';
+import { Box, Button, CircularProgress, TextField, styled } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../redux/hooks/hook';
 import { setSession } from '../redux/reducer/app';
 import { useLazyInitBotQuery, useLazySendMessageQuery } from '../redux/reducer/botApi';
 import { Message } from '../types/message';
+import CardFC from './card';
 import MessageFC from './message';
 
-const ChatBot = () => {
+function ChatBot() {
    const [init, result] = useLazyInitBotQuery();
    const [sendMessage] = useLazySendMessageQuery();
    const didMountRef = useRef(false);
@@ -23,19 +27,21 @@ const ChatBot = () => {
    };
 
    const sendUserMessage = () => {
-      pushMessage(userInput, true, userInput);
+      if (userInput.length === 0) return;
+      pushMessage(userInput, true, userInput, undefined);
       sendMessage({
-         session: session,
+         session,
          body: {
             text: userInput,
          },
       }).then((res: any) => {
-         pushMessage(res.data?.answers[0].content, false, res.data?.answers[0].interactionId);
+         const msg = res.data?.answers[0];
+         pushMessage(msg.content, false, msg.interactionId, msg.technicalText?.type || '');
       });
    };
 
-   const pushMessage = (message: any, type: any, key: string) => {
-      setMessages((prev: any) => [...prev, { text: message, type: type, key: key }]);
+   const pushMessage = (message: any, type: any, key: string, typeMessage: any = '') => {
+      setMessages((prev: any) => [...prev, { text: message, type, key, typeMessage }]);
       setUserInput('');
    };
 
@@ -89,7 +95,12 @@ const ChatBot = () => {
          <Box sx={{ height: '100%', overflow: 'scroll', p: '1rem', boxSizing: 'border-box' }}>
             {result.isLoading && <CircularProgress />}
             {messages?.map((mes) => {
-               console.log(`loggnig`);
+               if (mes.typeMessage === 'card') {
+                  console.log(`el request del parser: ${JSON.stringify(mes.text)}`);
+                  const cardArray = JSON.parse(JSON.stringify(mes.text));
+                  console.log(`array card: ${cardArray}`);
+                  return mes.text.map((card: any) => <CardFC url={card.url} label={card.label} image={card.image} />);
+               }
                return <MessageFC text={mes.text} keyTag={mes.key} type={mes.type} />;
             })}
             <div ref={bottomRef} />
@@ -117,7 +128,7 @@ const ChatBot = () => {
          </Box>
       </Box>
    );
-};
+}
 export default ChatBot;
 
 const MyComponent = styled(TextField)({

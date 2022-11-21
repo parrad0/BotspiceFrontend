@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 
-const MessageFC = ({ text, keyTag, type }: any) => {
+function MessageFC({ text, keyTag, type }: any) {
    return (
       <Box
          sx={{
@@ -13,8 +13,8 @@ const MessageFC = ({ text, keyTag, type }: any) => {
             borderRadius: '5px',
          }}
       >
-         <span key={keyTag} dangerouslySetInnerHTML={{ __html: text }}></span>
+         <span key={keyTag} dangerouslySetInnerHTML={{ __html: text }} />
       </Box>
    );
-};
+}
 export default MessageFC;
