@@ -22,6 +22,17 @@ function ChatBot() {
    const dispatch = useDispatch();
    const session = useAppSelector((state) => state.app.session);
 
+   const _parseCardResponse = (cards: any) => {
+      return JSON.parse(
+         cards.text
+            .replaceAll(`image=`, `"image":"`)
+            .replaceAll(`label=`, `"label":"`)
+            .replaceAll(`url=`, `"url":"`)
+            .replaceAll(`,`, `",`)
+            .replaceAll(`}",`, `"},`)
+            .replaceAll(`}]`, `"}]`)
+      );
+   };
    const _deleteCharacter = () => {
       setUserInput((prev) => prev.substring(0, prev.length - 1));
    };
@@ -36,6 +47,7 @@ function ChatBot() {
          },
       }).then((res: any) => {
          const msg = res.data?.answers[0];
+         console.log(`data: ${JSON.stringify(msg.technicalText?.data)}`);
          pushMessage(msg.content, false, msg.interactionId, msg.technicalText?.type || '');
       });
    };
@@ -95,11 +107,10 @@ function ChatBot() {
          <Box sx={{ height: '100%', overflow: 'scroll', p: '1rem', boxSizing: 'border-box' }}>
             {result.isLoading && <CircularProgress />}
             {messages?.map((mes) => {
-               if (mes.typeMessage === 'card') {
-                  console.log(`el request del parser: ${JSON.stringify(mes.text)}`);
-                  const cardArray = JSON.parse(JSON.stringify(mes.text));
-                  console.log(`array card: ${cardArray}`);
-                  return mes.text.map((card: any) => <CardFC url={card.url} label={card.label} image={card.image} />);
+               if (mes?.typeMessage === 'card') {
+                  return _parseCardResponse(mes.text).map((card: any) => (
+                     <CardFC url={card.url} label={card.label} image={card.image} />
+                  ));
                }
                return <MessageFC text={mes.text} keyTag={mes.key} type={mes.type} />;
             })}
