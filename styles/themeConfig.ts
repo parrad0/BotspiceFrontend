@@ -1,15 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 import { createTheme, responsiveFontSizes } from '@mui/material';
-import { cyan } from '@mui/material/colors';
 
 const them = createTheme({
    palette: {
-      primary: cyan,
+      primary: { main: '#d9fdd3' },
       secondary: {
          main: '#FFFFFF',
       },
       info: {
-         main: '#BCF973',
+         main: '#f0f2f5',
       },
    },
    typography: {

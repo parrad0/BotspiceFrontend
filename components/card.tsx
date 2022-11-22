@@ -1,22 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable unused-imports/no-unused-vars */
-import { Paper } from '@mui/material';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from '@mui/material';
 
 function CardFC({ image, url, label }: any) {
    return (
-      <Paper
-         elevation={3}
-         sx={{
-            backgroundColor: (theme) => theme.palette.secondary.main,
-            padding: '1rem',
-            maxWidth: '80%',
-            marginRight: 'auto',
-            mb: '1rem',
-            borderRadius: '40px',
-         }}
-      >
-         <p>{label}</p>
-      </Paper>
+      <Card sx={{ borderRadius: '15px', maxWidth: '80%', mb: '12px' }}>
+         <CardActionArea>
+            <CardMedia component="img" height="140" image={image} alt="green iguana" />
+            <CardContent>
+               <Typography gutterBottom variant="h5" component="div">
+                  {label}
+               </Typography>
+            </CardContent>
+         </CardActionArea>
+         <CardActions>
+            <Button size="small" color="primary" onClick={() => window.open(url, '_blank')}>
+               Share
+            </Button>
+         </CardActions>
+      </Card>
    );
 }
 

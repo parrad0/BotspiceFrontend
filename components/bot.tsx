@@ -12,6 +12,7 @@ import { useLazyInitBotQuery, useLazySendMessageQuery } from '../redux/reducer/b
 import { Message } from '../types/message';
 import CardFC from './card';
 import MessageFC from './message';
+import HeaderBot from './headerBot';
 
 function ChatBot() {
    const [init, result] = useLazyInitBotQuery();
@@ -25,7 +26,7 @@ function ChatBot() {
 
    const _parseCardResponse = (cards: any) => {
       return JSON.parse(
-         cards.text
+         cards
             .replaceAll(`image=`, `"image":"`)
             .replaceAll(`label=`, `"label":"`)
             .replaceAll(`url=`, `"url":"`)
@@ -96,7 +97,7 @@ function ChatBot() {
    return (
       <Box
          sx={{
-            borderRadius: '8px',
+            borderRadius: { xs: '0px', md: '8px' },
             width: '100%',
             height: '100%',
             backgroundColor: 'white',
@@ -104,8 +105,16 @@ function ChatBot() {
             flexDirection: 'column',
          }}
       >
-         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '3rem' }}>BotSpice</Box>
-         <Box sx={{ height: '100%', overflowY: 'scroll', p: '1rem', boxSizing: 'border-box' }}>
+         <HeaderBot />
+         <Box
+            sx={{
+               '&::-webkit-scrollbar': { display: 'none' },
+               height: '100%',
+               overflowY: 'scroll',
+               p: '1rem',
+               boxSizing: 'content-box',
+            }}
+         >
             {result.isLoading && <CircularProgress />}
             {messages?.map((mes) => {
                if (mes?.typeMessage === 'card') {
@@ -126,8 +135,8 @@ function ChatBot() {
                pb: '5px',
                pr: '17px',
                pl: '17px',
-               backgroundColor: '#CAF893',
-               borderRadius: '0px 0px 8px 8px',
+               backgroundColor: (theme) => theme.palette.info.main,
+               borderRadius: { xs: '0px', md: '0px 0px 8px 8px' },
             }}
          >
             <MyComponent
@@ -144,8 +153,8 @@ function ChatBot() {
                }}
             />
 
-            <IconButton color="primary" aria-label="upload picture" component="label" onClick={() => sendUserMessage()}>
-               <SendIcon />
+            <IconButton aria-label="upload picture" component="label" onClick={() => sendUserMessage()}>
+               <SendIcon fontSize="large" sx={{ color: (theme) => theme.palette.info.dark }} />
             </IconButton>
          </Box>
       </Box>
