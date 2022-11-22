@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable unused-imports/no-unused-vars */
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 
 function CardFC({ image, url, label }: any) {
    return (
-      <Box
+      <Paper elevation={3}
          sx={{
             backgroundColor: (theme) => theme.palette.secondary.main,
             padding: '1rem',
-            width: '40%',
+            maxWidth: '80%',
             marginRight: 'auto',
             mb: '1rem',
-            borderRadius: '5px',
+            borderRadius: '40px',
          }}
       >
          <p>{label}</p>
-      </Box>
+      </Paper>
    );
 }
 
