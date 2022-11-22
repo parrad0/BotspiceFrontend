@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable unused-imports/no-unused-vars */
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 
 function CardFC({ image, url, label }: any) {
    return (
-      <Paper elevation={3}
+      <Paper
+         elevation={3}
          sx={{
             backgroundColor: (theme) => theme.palette.secondary.main,
             padding: '1rem',
