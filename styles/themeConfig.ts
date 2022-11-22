@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { createTheme, responsiveFontSizes } from '@mui/material';
 import { cyan } from '@mui/material/colors';
 

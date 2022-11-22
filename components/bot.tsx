@@ -2,10 +2,10 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-key */
-import { Box, Button, CircularProgress, TextField, styled } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import { Box, CircularProgress, IconButton, TextField, styled } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import SendIcon from '@mui/icons-material/Send';
 import { useAppSelector } from '../redux/hooks/hook';
 import { setSession } from '../redux/reducer/app';
 import { useLazyInitBotQuery, useLazySendMessageQuery } from '../redux/reducer/botApi';
@@ -105,26 +105,27 @@ function ChatBot() {
          }}
       >
          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '3rem' }}>BotSpice</Box>
-         <div style={{height: '100%', overflow: 'hidden'}}>
-            <Box sx={{ height: '100%', width: '100%', overflowY: 'scroll', p: '1rem', boxSizing: 'border-box', paddingRight: '17px',  boxSizing: 'content-box' }}>
-               {result.isLoading && <CircularProgress />}
-               {messages?.map((mes) => {
-                  if (mes?.typeMessage === 'card') {
-                     return _parseCardResponse(mes.text).map((card: any) => (
-                        <CardFC url={card.url} label={card.label} image={card.image} />
-                     ));
-                  }
-                  return <MessageFC text={mes.text} keyTag={mes.key} type={mes.type} />;
-               })}
-               <div ref={bottomRef} />
-            </Box>
-         </div>
+         <Box sx={{ height: '100%', overflowY: 'scroll', p: '1rem', boxSizing: 'border-box' }}>
+            {result.isLoading && <CircularProgress />}
+            {messages?.map((mes) => {
+               if (mes?.typeMessage === 'card') {
+                  return _parseCardResponse(mes.text).map((card: any) => (
+                     <CardFC url={card.url} label={card.label} image={card.image} />
+                  ));
+               }
+               return <MessageFC text={mes.text} keyTag={mes.key} type={mes.type} />;
+            })}
+            <div ref={bottomRef} />
+         </Box>
          <Box
             sx={{
                display: 'flex',
                alignItems: 'center',
                justifyContent: 'space-between',
-               p: '0.3rem 0.8rem',
+               pt: '5px',
+               pb: '5px',
+               pr: '17px',
+               pl: '17px',
                backgroundColor: '#CAF893',
                borderRadius: '0px 0px 8px 8px',
             }}
@@ -134,13 +135,18 @@ function ChatBot() {
                value={userInput}
                id="outlined-basic"
                multiline
+               variant="standard"
                maxRows={4}
                color="info"
                onKeyDown={(a) => handleKeyboard(a)}
+               InputProps={{
+                  disableUnderline: true,
+               }}
             />
-            <Button variant="contained" onClick={() => sendUserMessage()} endIcon={<SendIcon />} sx={{backgroundColor:'#B1F85C'}}>
-               Send
-            </Button>
+
+            <IconButton color="primary" aria-label="upload picture" component="label" onClick={() => sendUserMessage()}>
+               <SendIcon />
+            </IconButton>
          </Box>
       </Box>
    );
@@ -149,6 +155,7 @@ export default ChatBot;
 
 const MyComponent = styled(TextField)({
    backgroundColor: 'white',
-   borderRadius: '10px',
+   borderRadius: '8px',
+   padding: '8px 12px 11px',
    borderColor: 'grey !important',
 });
