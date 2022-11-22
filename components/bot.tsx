@@ -105,18 +105,20 @@ function ChatBot() {
          }}
       >
          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '3rem' }}>BotSpice</Box>
-         <Box sx={{ height: '100%', overflowY: 'scroll', p: '1rem', boxSizing: 'border-box' }}>
-            {result.isLoading && <CircularProgress />}
-            {messages?.map((mes) => {
-               if (mes?.typeMessage === 'card') {
-                  return _parseCardResponse(mes.text).map((card: any) => (
-                     <CardFC url={card.url} label={card.label} image={card.image} />
-                  ));
-               }
-               return <MessageFC text={mes.text} keyTag={mes.key} type={mes.type} />;
-            })}
-            <div ref={bottomRef} />
-         </Box>
+         <div style={{height: '100%', overflow: 'hidden'}}>
+            <Box sx={{ height: '100%', width: '100%', overflowY: 'scroll', p: '1rem', boxSizing: 'border-box', paddingRight: '17px',  boxSizing: 'content-box' }}>
+               {result.isLoading && <CircularProgress />}
+               {messages?.map((mes) => {
+                  if (mes?.typeMessage === 'card') {
+                     return _parseCardResponse(mes.text).map((card: any) => (
+                        <CardFC url={card.url} label={card.label} image={card.image} />
+                     ));
+                  }
+                  return <MessageFC text={mes.text} keyTag={mes.key} type={mes.type} />;
+               })}
+               <div ref={bottomRef} />
+            </Box>
+         </div>
          <Box
             sx={{
                display: 'flex',
