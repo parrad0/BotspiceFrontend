@@ -4,7 +4,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable react/jsx-key */
-import { Box, CircularProgress, IconButton, TextField, styled } from '@mui/material';
+import { Box, IconButton, TextField, styled } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import SendIcon from '@mui/icons-material/Send';
@@ -15,10 +15,11 @@ import { Message } from '../types/message';
 import CardFC from './card';
 import MessageFC from './message';
 import HeaderBot from './headerBot';
+import Spinner from './spinner';
 
-function ChatBot() {
+function ChatBot({ happy, typing }: any) {
    const [init, result] = useLazyInitBotQuery();
-   const [sendMessage] = useLazySendMessageQuery();
+   const [sendMessage, messageResponse] = useLazySendMessageQuery();
    const [userInput, setUserInput] = useState('');
    const [messages, setMessages] = useState<Message[] | undefined>([]);
    const bottomRef = useRef<any>(null);
@@ -54,6 +55,7 @@ function ChatBot() {
 
    const sendUserMessage = (input: string) => {
       if (input.length === 0) return;
+      happy(true);
       pushMessage(input, true, input, undefined);
       sendMessage({
          session,
@@ -62,7 +64,7 @@ function ChatBot() {
          },
       }).then((res: any) => {
          const msg = res.data?.answers[0];
-         console.log(`data: ${JSON.stringify(msg.technicalText?.data)}`);
+         console.log(`data: ${JSON.stringify(msg?.technicalText?.data)}`);
          pushMessage(msg.content, false, msg.interactionId, msg.technicalText?.type || '');
       });
    };
@@ -76,14 +78,17 @@ function ChatBot() {
       switch (String.fromCharCode(e.keyCode)) {
          case '\b': {
             _deleteCharacter();
+            typing(false);
             break;
          }
          case '\r': {
             sendUserMessage(userInput);
+            typing(false);
             break;
          }
          default: {
             setUserInput((prev) => prev.concat(String.fromCharCode(e.keyCode)).toLowerCase());
+            typing(true);
             break;
          }
       }
@@ -111,49 +116,52 @@ function ChatBot() {
    return (
       <Box
          sx={{
+            position: 'relative',
             borderRadius: { xs: '0px', md: '8px' },
-            maxWidth: { xs: '100%', md: '800px' },
-            maxHeight: { xs: '100%', md: '900px' },
-            minHeight: { md: '700px' },
-            // minHeight: '900px',
-            // minWidth: '900px',
+            width: { xs: '100%', md: '70%', xl: '60%' },
+            height: { xs: '100%', md: '80%' },
             backgroundColor: 'white',
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'hidden',
          }}
       >
          <HeaderBot />
          <Box
             sx={{
                '&::-webkit-scrollbar': { display: 'none' },
-               height: '100%',
-               flexGrow: 1,
+               flex: '1 1 400px',
+               overflow: 'hidden',
                overflowY: 'scroll',
                p: '1rem',
                boxSizing: 'content-box',
+               backgroundColor: '#D9D9D9',
             }}
          >
-            {result.isLoading && <CircularProgress />}
-            {messages?.map((mes) => {
-               if (mes?.typeMessage === 'card') {
-                  return _parseCardResponse(mes.text).map((card: any) => (
-                     <CardFC url={card.url} label={card.label} image={card.image} />
-                  ));
-               }
-               return (
-                  <MessageFC
-                     text={mes.text}
-                     keyTag={mes.key}
-                     type={mes.type}
-                     buttons={mes.buttons}
-                     action={sendUserMessage}
-                  />
-               );
-            })}
-            <div ref={bottomRef} />
+            <Box>
+               {result.isLoading && <Spinner />}
+               {messages?.map((mes) => {
+                  if (mes?.typeMessage === 'card') {
+                     return _parseCardResponse(mes.text).map((card: any) => (
+                        <CardFC url={card.url} label={card.label} image={card.image} />
+                     ));
+                  }
+                  return (
+                     <MessageFC
+                        text={mes.text}
+                        keyTag={mes.key}
+                        type={mes.type}
+                        buttons={mes.buttons}
+                        action={sendUserMessage}
+                     />
+                  );
+               })}
+               <div ref={bottomRef} />
+            </Box>
          </Box>
          <Box
             sx={{
+               flex: '.1 .1 auto',
                display: 'flex',
                alignItems: 'center',
                justifyContent: 'space-between',
@@ -179,7 +187,12 @@ function ChatBot() {
                }}
             />
 
-            <IconButton aria-label="upload picture" component="label" onClick={() => sendUserMessage(userInput)}>
+            <IconButton
+               disabled={messageResponse.isLoading || result.isLoading}
+               aria-label="upload picture"
+               component="label"
+               onClick={() => sendUserMessage(userInput)}
+            >
                <SendIcon fontSize="large" sx={{ color: (theme) => theme.palette.info.dark }} />
             </IconButton>
          </Box>

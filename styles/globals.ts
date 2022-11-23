@@ -168,18 +168,18 @@ a, a:hover, a:focus, a:active {
 	animation:robot_bounce 1.1s ease-in-out 0s infinite alternate}
 
 	#head{
-	animation:robot_bounce 1.1s ease-in-out 0.05s infinite alternate}
+	animation:robot_bounce 2.1s ease-in-out 0.05s infinite alternate}
 
 	#arms{
 	animation:robot_bounce 1.1s ease-in-out 0.1s infinite alternate}
 
 	#arms #left{
 	transform-origin:center right; 
-	animation:arms_bounce_left 1.1s ease-in-out 0s infinite alternate}
+	animation:arms_bounce_left 1.7s ease-in-out 0s infinite alternate}
 
 	#arms #right{
 	transform-origin:center left; 
-	animation:arms_bounce_right 1.1s ease-in-out 0s infinite alternate}
+	animation:arms_bounce_right 1.7s ease-in-out 0s infinite alternate}
 
 	#eyes ellipse{
 	transform-origin:center center; 

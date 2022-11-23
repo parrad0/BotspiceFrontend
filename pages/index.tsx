@@ -1,11 +1,15 @@
 import { Box, Grid } from '@mui/material';
+import { useState } from 'react';
 import AnimatedBot from '../components/animatedBot';
 import ChatBot from '../components/bot';
 
 export default function Home() {
+   const [happy, setHappy] = useState(false);
+   const [typing, setTyping] = useState(false);
+
    return (
       <Box sx={{ background: 'linear-gradient(-45deg, #00bcd4, #80deea, #ef9a9a, #FF845E);' }}>
-         <Grid container sx={{ height: '100vh' }}>
+         <Grid container sx={{ height: '100vh', overflow: 'hidden' }}>
             <Grid
                item
                md={6}
@@ -19,15 +23,15 @@ export default function Home() {
                <Box
                   sx={{
                      width: '100%',
-                     '& svg': { zIndex: 2000, width: '100%', height: '100%' },
+                     '& svg': { zIndex: 2000, width: '80%', height: '80%' },
                   }}
                >
-                  <AnimatedBot />
+                  <AnimatedBot happy={happy} typing={typing} />
                </Box>
             </Grid>
             <Grid item xs={12} md={6}>
-               <Box sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <ChatBot />
+               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                  <ChatBot happy={setHappy} typing={setTyping} />
                </Box>
             </Grid>
          </Grid>
