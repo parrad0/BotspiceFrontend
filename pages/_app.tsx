@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
 import { Provider as Redux } from 'react-redux';

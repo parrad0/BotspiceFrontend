@@ -13,7 +13,11 @@ function HeaderBot() {
             borderRadius: { xs: '0px', md: '8px 8px 0px 0px' },
          }}
       >
-         <Avatar alt="Remy Sharp" sx={{ width: 30, height: 30 }} />
+         <Avatar
+            alt="Remy Sharp"
+            src="https://w7.pngwing.com/pngs/1001/63/png-transparent-internet-bot-computer-icons-chatbot-sticker-electronics-face-careobot.png"
+            sx={{ width: 30, height: 30 }}
+         />
          <Typography sx={{ ml: '15px', color: 'black' }}>BotSpice</Typography>
       </Box>
    );

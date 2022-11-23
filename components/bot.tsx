@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -17,7 +19,6 @@ import HeaderBot from './headerBot';
 function ChatBot() {
    const [init, result] = useLazyInitBotQuery();
    const [sendMessage] = useLazySendMessageQuery();
-   const didMountRef = useRef(false);
    const [userInput, setUserInput] = useState('');
    const [messages, setMessages] = useState<Message[] | undefined>([]);
    const bottomRef = useRef<any>(null);
@@ -25,13 +26,25 @@ function ChatBot() {
    const session = useAppSelector((state) => state.app.session);
 
    const _parseCardResponse = (cards: any) => {
+      console.log(
+         `string before parse: ${cards
+            .replaceAll(`image=`, `"image":"`)
+            .replaceAll(`label=`, `"label":"`)
+            .replaceAll(`url=`, `"url":"`)
+            .replaceAll(`,"`, `","`)
+            .replaceAll(`, "`, `","`)
+            .replaceAll(`},`, `"},`)
+            .replaceAll(`}]`, `"}]`)}`
+      );
+
       return JSON.parse(
          cards
             .replaceAll(`image=`, `"image":"`)
             .replaceAll(`label=`, `"label":"`)
             .replaceAll(`url=`, `"url":"`)
-            .replaceAll(`,`, `",`)
-            .replaceAll(`}",`, `"},`)
+            .replaceAll(`,"`, `","`)
+            .replaceAll(`, "`, `","`)
+            .replaceAll(`},`, `"},`)
             .replaceAll(`}]`, `"}]`)
       );
    };
@@ -60,7 +73,6 @@ function ChatBot() {
    };
 
    const handleKeyboard = (e: any) => {
-      console.log(`key: ${JSON.stringify(String.fromCharCode(e.keyCode))}`);
       switch (String.fromCharCode(e.keyCode)) {
          case '\b': {
             _deleteCharacter();
@@ -82,24 +94,23 @@ function ChatBot() {
    }, [messages]);
 
    useEffect(() => {
-      if (didMountRef.current) {
-         init(1).then((res: any) => {
-            dispatch(setSession(res.data.sessionCode));
-            setMessages((prev: any) => [
-               ...prev,
-               { text: res.data.answers[0].content, type: false, key: res.data.answers[0].interactionId },
-            ]);
-         });
-      }
-      didMountRef.current = true;
+      init(1).then((res: any) => {
+         dispatch(setSession(res.data.sessionCode));
+         setMessages((prev: any) => [
+            ...prev,
+            { text: res.data.answers[0].content, type: false, key: res.data.answers[0].interactionId },
+         ]);
+      });
    }, []);
 
    return (
       <Box
          sx={{
             borderRadius: { xs: '0px', md: '8px' },
-            width: '100%',
-            height: '100%',
+            maxWidth: { xs: '100%', md: '800px' },
+            maxHeight: { xs: '100%', md: '900px' },
+            // minHeight: '900px',
+            // minWidth: '900px',
             backgroundColor: 'white',
             display: 'flex',
             flexDirection: 'column',
@@ -110,6 +121,7 @@ function ChatBot() {
             sx={{
                '&::-webkit-scrollbar': { display: 'none' },
                height: '100%',
+               flexGrow: 1,
                overflowY: 'scroll',
                p: '1rem',
                boxSizing: 'content-box',
@@ -167,4 +179,5 @@ const MyComponent = styled(TextField)({
    borderRadius: '8px',
    padding: '8px 12px 11px',
    borderColor: 'grey !important',
+   width: '100%',
 });

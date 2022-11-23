@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import { Paper } from '@mui/material';
 
 function MessageFC({ text, keyTag, type }: any) {
