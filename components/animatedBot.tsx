@@ -103,8 +103,8 @@ function AnimatedBot({ happy, typing }: any) {
             </g>
          </svg>
          {typing && !happy && (
-            <g id="body">
-               <svg width="400" height="400" viewBox="-300 -350 850 850" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="head">
+               <svg width="400" height="500" viewBox="-300 -330 850 850" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                      d="M532.956 173.632C490.326 49.6144 353.982 14.1972 291.138 11.9907C122.057 10.6152 30.2542 121.927 16.6364 189.584C1.17022 226.901 13.783 331.604 75.6018 405.563C152.875 498.011 340.261 492.942 412.896 461.792C502.972 423.163 586.243 328.653 532.956 173.632Z"
                      fill="#FFFBFB"

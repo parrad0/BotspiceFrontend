@@ -2,10 +2,13 @@ import { Box, Grid } from '@mui/material';
 import { useState } from 'react';
 import AnimatedBot from '../components/animatedBot';
 import ChatBot from '../components/bot';
+import ShareModal from '../components/shareModal';
+import { useAppSelector } from '../redux/hooks/hook';
 
 export default function Home() {
    const [happy, setHappy] = useState(false);
    const [typing, setTyping] = useState(false);
+   const shareModal = useAppSelector((state) => state.app.shareModal.status);
 
    return (
       <Box sx={{ background: 'linear-gradient(-45deg, #00bcd4, #80deea, #ef9a9a, #FF845E);' }}>
@@ -35,6 +38,7 @@ export default function Home() {
                </Box>
             </Grid>
          </Grid>
+         <ShareModal open={shareModal} />
       </Box>
    );
 }
