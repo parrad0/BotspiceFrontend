@@ -1,7 +1,10 @@
 /* eslint-disable react/no-danger */
-import { Paper } from '@mui/material';
+import { Button, Paper } from '@mui/material';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import { useState } from 'react';
 
-function MessageFC({ text, keyTag, type }: any) {
+function MessageFC({ text, keyTag, type, buttons, action }: any) {
+   const [status, setStatus] = useState(false);
    return (
       <Paper
          elevation={3}
@@ -18,6 +21,27 @@ function MessageFC({ text, keyTag, type }: any) {
          }}
       >
          <span key={keyTag} dangerouslySetInnerHTML={{ __html: text }} />
+         {buttons && (
+            <ButtonGroup
+               disabled={status}
+               variant="contained"
+               aria-label="outlined primary button group"
+               sx={{ mt: '10px', backgroundColor: (theme) => theme.palette.info.main }}
+            >
+               {buttons?.map((_button: any) => {
+                  return (
+                     <Button
+                        onClick={() => {
+                           action(_button.value);
+                           setStatus(true);
+                        }}
+                     >
+                        {_button.name}
+                     </Button>
+                  );
+               })}
+            </ButtonGroup>
+         )}
       </Paper>
    );
 }

@@ -3,4 +3,5 @@ export type Message = {
    type: boolean;
    key: string;
    typeMessage: string;
+   buttons: any;
 };

@@ -6,7 +6,8 @@
       "dev": "next dev",
       "build": "next build && next export",
       "start": "next start",
-      "lint": "next lint"
+      "lint": "next lint",
+      "format": "prettier-eslint --write \"{,!(node_modules)/**/}*.{ts,tsx}\""
    },
    "dependencies": {
       "@emotion/react": "^11.10.5",

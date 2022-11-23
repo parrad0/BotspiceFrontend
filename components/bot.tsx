@@ -52,13 +52,13 @@ function ChatBot() {
       setUserInput((prev) => prev.substring(0, prev.length - 1));
    };
 
-   const sendUserMessage = () => {
-      if (userInput.length === 0) return;
-      pushMessage(userInput, true, userInput, undefined);
+   const sendUserMessage = (input: string) => {
+      if (input.length === 0) return;
+      pushMessage(input, true, input, undefined);
       sendMessage({
          session,
          body: {
-            text: userInput,
+            text: input,
          },
       }).then((res: any) => {
          const msg = res.data?.answers[0];
@@ -79,7 +79,7 @@ function ChatBot() {
             break;
          }
          case '\r': {
-            sendUserMessage();
+            sendUserMessage(userInput);
             break;
          }
          default: {
@@ -98,7 +98,12 @@ function ChatBot() {
          dispatch(setSession(res.data.sessionCode));
          setMessages((prev: any) => [
             ...prev,
-            { text: res.data.answers[0].content, type: false, key: res.data.answers[0].interactionId },
+            {
+               text: res.data.answers[0].content,
+               type: false,
+               key: res.data.answers[0].interactionId,
+               buttons: res.data.answers[0].buttons,
+            },
          ]);
       });
    }, []);
@@ -109,6 +114,7 @@ function ChatBot() {
             borderRadius: { xs: '0px', md: '8px' },
             maxWidth: { xs: '100%', md: '800px' },
             maxHeight: { xs: '100%', md: '900px' },
+            minHeight: { md: '700px' },
             // minHeight: '900px',
             // minWidth: '900px',
             backgroundColor: 'white',
@@ -134,7 +140,15 @@ function ChatBot() {
                      <CardFC url={card.url} label={card.label} image={card.image} />
                   ));
                }
-               return <MessageFC text={mes.text} keyTag={mes.key} type={mes.type} />;
+               return (
+                  <MessageFC
+                     text={mes.text}
+                     keyTag={mes.key}
+                     type={mes.type}
+                     buttons={mes.buttons}
+                     action={sendUserMessage}
+                  />
+               );
             })}
             <div ref={bottomRef} />
          </Box>
@@ -165,7 +179,7 @@ function ChatBot() {
                }}
             />
 
-            <IconButton aria-label="upload picture" component="label" onClick={() => sendUserMessage()}>
+            <IconButton aria-label="upload picture" component="label" onClick={() => sendUserMessage(userInput)}>
                <SendIcon fontSize="large" sx={{ color: (theme) => theme.palette.info.dark }} />
             </IconButton>
          </Box>
