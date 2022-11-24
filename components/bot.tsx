@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/default-param-last */
+/* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -63,14 +65,28 @@ function ChatBot({ happy, typing }: any) {
             text: input,
          },
       }).then((res: any) => {
-         const msg = res.data?.answers[0];
-         console.log(`data: ${JSON.stringify(msg?.technicalText?.data)}`);
-         pushMessage(msg.content, false, msg.interactionId, msg.technicalText?.type || '');
+         // const msg = res.data?.answers[0];
+         res.data?.answers.map((answer: any) =>
+            pushMessage(answer.content, false, answer.interactionId, answer.technicalText?.type || '', answer.buttons)
+         );
+         // console.log(`answer: ${JSON.stringify(msg)}`);
+         // console.log(`data: ${JSON.stringify(msg?.technicalText?.data)}`);
+         // pushMessage(msg.content, false, msg.interactionId, msg.technicalText?.type || '');
       });
    };
 
-   const pushMessage = (message: any, type: any, key: string, typeMessage: any = '') => {
-      setMessages((prev: any) => [...prev, { text: message, type, key, typeMessage }]);
+   const pushMessage = (message: any, type: any, key: string, typeMessage: any = '', buttons: any) => {
+      // setMessages((prev: any) => [...prev, { text: message, type:, key, typeMessage }]);
+      setMessages((prev: any) => [
+         ...prev,
+         {
+            text: message,
+            type,
+            key,
+            typeMessage,
+            buttons,
+         },
+      ]);
       setUserInput('');
    };
 

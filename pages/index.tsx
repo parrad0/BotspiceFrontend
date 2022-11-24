@@ -1,5 +1,5 @@
 import { Box, Grid } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AnimatedBot from '../components/animatedBot';
 import ChatBot from '../components/bot';
 import ShareModal from '../components/shareModal';
@@ -9,10 +9,17 @@ export default function Home() {
    const [happy, setHappy] = useState(false);
    const [typing, setTyping] = useState(false);
    const shareModal = useAppSelector((state) => state.app.shareModal.status);
-
+   const appHeight = () => {
+      const doc = document.documentElement;
+      doc.style.setProperty('--app-height', `${window.innerHeight}px`);
+   };
+   useEffect(() => {
+      window.addEventListener('resize', appHeight);
+      appHeight();
+   }, []);
    return (
       <Box sx={{ background: 'linear-gradient(-45deg, #00bcd4, #80deea, #ef9a9a, #FF845E);' }}>
-         <Grid container sx={{ height: '100vh', overflow: 'hidden' }}>
+         <Grid container sx={{ height: 'var(--app-height)', overflow: 'hidden' }}>
             <Grid
                item
                md={6}

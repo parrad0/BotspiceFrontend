@@ -82,7 +82,7 @@ function ShareModal({ open }: { open: boolean }) {
                   size="medium"
                   variant="outlined"
                   startIcon={<LinkIcon />}
-                  onClick={() => navigator.clipboard.writeText(url)}
+                  onClick={() => navigator.clipboard.writeText(url ?? '')}
                >
                   copy link
                </StyledButton>

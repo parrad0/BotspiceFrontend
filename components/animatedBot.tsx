@@ -102,7 +102,7 @@ function AnimatedBot({ happy, typing }: any) {
                </defs>
             </g>
          </svg>
-         {typing && !happy && (
+         {((typing && !happy) || (happy && typing)) && (
             <g id="head">
                <svg width="400" height="500" viewBox="-300 -330 850 850" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -220,7 +220,7 @@ function AnimatedBot({ happy, typing }: any) {
                </svg>
             </g>
          )}
-         {((!happy && !typing) || (happy && typing)) && (
+         {!happy && !typing && (
             <g id="head">
                <svg width="400" height="400" viewBox="-300 -350 850 850" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
